@@ -349,37 +349,6 @@ public class Worker extends Thread {
         this.assemblyTypeOnGoing = assemblyTypeOnGoing;
     }
 
-    /**
-     * @deprecated
-     */
-    public void assemble2() {
-        boolean canAssemble = false;
-        getPaid();
 
-        try {
-            getMutex().acquire();
-            canAssemble = getDrive().canAssembleChapter();
-            getMutex().release();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (canAssemble || getProductionAccount() != 0) {
-            produce();
-            if (getProductionAccount() >= 1) {
-                try {
-                    getMutex().acquire();
-                    getDrive().addElement(getcomponentType());
-                    getMutex().release();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                resetProductionAccount();
-            }
-
-        }
-
-    }
 
 }
