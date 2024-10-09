@@ -51,313 +51,11 @@ public class MainUI extends javax.swing.JFrame {
         toggleWorkersQuantityButtons(false);
     }
 
-    public void resetChaptersCountersUI(int studioInt) {
-        switch (studioInt) {
-            case 0 -> {
-                standardComputer_dell_qty.setText("0");
-                gpuComputer_dell_qty.setText("0");
-            }
 
-            case 1 -> {
-                standarComputermsi.setText("0");
-                gpuComputerMSI.setText("0");
-            }
-
-            default -> {
-            }
-        }
-    }
-
-    public void toggleWorkersQuantityButtons(boolean enabled) {
-        dell_MotherBoard_min.setEnabled(enabled);
-        dell_cpu_min.setEnabled(enabled);
-        dell_ram_min.setEnabled(enabled);
-        dell_powerSupply_min.setEnabled(enabled);
-        dell_gpu_min.setEnabled(enabled);
-        dell_assembly_mina.setEnabled(enabled);
-
-        dell_motherboard_plus.setEnabled(enabled);
-        dell_cpu_plus.setEnabled(enabled);
-        dell_ram_plus.setEnabled(enabled);
-        dell_power_supply_plus.setEnabled(enabled);
-        dell_gpu_plus.setEnabled(enabled);
-        dell_assembly_plus.setEnabled(enabled);
-
-        motherboard_Min_msi.setEnabled(enabled);
-        cpu_Min_msi.setEnabled(enabled);
-        tam_Min_msi.setEnabled(enabled);
-        powerSupply_Min_msi.setEnabled(enabled);
-        gpu_Min_msi.setEnabled(enabled);
-        assembling_Min_msi.setEnabled(enabled);
-
-        motherboard_plus_msi.setEnabled(enabled);
-        cpu_plus_msi.setEnabled(enabled);
-        ram_plus_msi.setEnabled(enabled);
-        power_supply_plus_msi.setEnabled(enabled);
-        gpu_plus_msi.setEnabled(enabled);
-        assemblin_plus_msi.setEnabled(enabled);
-    }
-
-    public void toggleStartSimulationButton(boolean enabled) {
-        startSimulation.setEnabled(enabled);
-    }
-
-    public void setInitialUIParameters() {
-        setInitialDaysLeftUI();
-        setInitialWorkersQtyUI();
-    }
-
-    public void setInitialDaysLeftUI() {
-        for (int i = 0; i < 2; i++) {
-            changeDaysLeftCounter(i, Integer.toString(getConfig().getDeliveryDays()));
-        }
-    }
-
-    public void setInitialWorkersQtyUI() {
-        for (int i = 0; i < 6; i++) {
-            changeWorkersQtyTextByType(0, i,
-                    Integer.toString(getConfig().getDellParameters().getParamsByWorkerType(i).getQuantity()));
-
-            changeWorkersQtyTextByType(1, i,
-                    Integer.toString(getConfig().getMsiParameters().getParamsByWorkerType(i).getQuantity()));
-        }
-    }
-
-    public void changeWorkersQtyTextByType(int studioInt, int workerType, String workersQty) {
-        switch (studioInt) {
-            case 0 -> {
-                switch (workerType) {
-                    case 0 ->
-                        dell_motherBoard.setText(workersQty);
-                    case 1 ->
-                        dell_cpu.setText(workersQty);
-                    case 2 ->
-                        dell_ram.setText(workersQty);
-                    case 3 ->
-                        dell_power_supply.setText(workersQty);
-                    case 4 ->
-                        dell_gpu.setText(workersQty);
-                    case 5 ->
-                        dell_assembly.setText(workersQty);
-                    default -> {
-                    }
-                }
-            }
-
-            case 1 -> {
-                switch (workerType) {
-                    case 0 ->
-                        qty_MotherBoard_msi.setText(workersQty);
-                    case 1 ->
-                        qty_cpu_msi.setText(workersQty);
-                    case 2 ->
-                        qty_ram_msi.setText(workersQty);
-                    case 3 ->
-                        qty_powerS_msi.setText(workersQty);
-                    case 4 ->
-                        qty_gpu_msi.setText(workersQty);
-                    case 5 ->
-                        qty_assembli_msi.setText(workersQty);
-                    default -> {
-                    }
-                }
-            }
-
-            default -> {
-            }
-        }
-    }
-
-    public void changeDirectorStatusText(int studioInt, String directorStatus) {
-        switch (studioInt) {
-            case 0 ->
-                director_status_dell.setText(directorStatus);
-            case 1 ->
-                directorStatusmsi.setText(directorStatus);
-            default -> {
-            }
-        }
-    }
-
-    public void changeManagerFaultsQtyText(int studioInt, String faultsQty) {
-        switch (studioInt) {
-            case 0 ->
-                qty_faults_dell.setText(faultsQty);
-            case 1 ->
-                faultsQtymsi.setText(faultsQty);
-            default -> {
-            }
-        }
-    }
-
-    public void changeChapterQuantity(int studioInt, int chapterType, int chapterQuantity) {
-
-        if (studioInt == 0) {
-
-            switch (chapterType) {
-
-                case 0 -> {
-
-                    this.standardComputer_dell_qty.setText(Integer.toString(chapterQuantity));
-
-                }
-
-                case 1 -> {
-
-                    this.gpuComputer_dell_qty.setText(Integer.toString(chapterQuantity));
-
-                }
-
-            }
-
-        } else {
-
-            switch (chapterType) {
-
-                case 0 -> {
-
-                    this.standarComputermsi.setText(Integer.toString(chapterQuantity));
-
-                }
-
-                case 1 -> {
-
-                    this.gpuComputerMSI.setText(Integer.toString(chapterQuantity));
-
-                }
-
-            }
-
-        }
-
-    }
-
-    public void changeDriveElements(int studioInt, int workerType, int[] chapterElements) {
-
-        if (studioInt == 0) {
-            switch (workerType) {
-                case 0 -> {
-                    dell_motherboard.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 1 -> {
-                    cpu_dell.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 2 -> {
-                    ram_dell.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 3 -> {
-                    fuente_poder_dell.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 4 -> {
-                    gpu_dell.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 5 -> {
-                    dell_motherboard.setText(Integer.toString(chapterElements[0]));
-                    cpu_dell.setText(Integer.toString(chapterElements[1]));
-                    ram_dell.setText(Integer.toString(chapterElements[2]));
-                    fuente_poder_dell.setText(Integer.toString(chapterElements[3]));
-                    gpu_dell.setText(Integer.toString(chapterElements[4]));
-
-                }
-
-                default -> {
-                }
-            }
-        } else {
-            switch (workerType) {
-                case 0 -> {
-                    MSI_scritpt_motherboard.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 1 -> {
-                    MSI_script_cpu.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 2 -> {
-                    MSI_script_ram.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 3 -> {
-                    MSI_script_power_supply.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 4 -> {
-                    MSI_script_gpu.setText(Integer.toString(chapterElements[workerType]));
-                }
-                case 5 -> {
-                    MSI_scritpt_motherboard.setText(Integer.toString(chapterElements[0]));
-                    MSI_script_cpu.setText(Integer.toString(chapterElements[1]));
-                    MSI_script_ram.setText(Integer.toString(chapterElements[2]));
-                    MSI_script_power_supply.setText(Integer.toString(chapterElements[3]));
-                    MSI_script_gpu.setText(Integer.toString(chapterElements[4]));
-
-                }
-
-                default -> {
-                }
-            }
-        }
-    }
-
-    public void changeManagerDiscountedText(int studioInt, String discountedSalary) {
-        switch (studioInt) {
-            case 0 ->
-                manager_discounted_qty_dekk.setText(discountedSalary);
-            case 1 ->
-                managerSalaryDiscountmsi.setText(discountedSalary);
-            default -> {
-            }
-        }
-    }
-
-    public void changeManagerTextStatus(int studioInt, String status) {
-        if (studioInt == 0) {
-            manager_status_dell.setText(status);
-        } else {
-            managerStatusmsi.setText(status);
-        }
-    }
-
-    public void changeDaysLeftCounter(int studioInt, String daysLeft) {
-        if (studioInt == 0) {
-            daysLeftdell.setText(daysLeft);
-        } else {
-            daysLeftmsi.setText(daysLeft);
-        }
-    }
-
-    public void showCosts(int studioInt, int totalCosts) {
-
-        switch (studioInt) {
-            case 0:
-                this.costsdell.setText("$" + formater.format(totalCosts));
-                break;
-            case 1:
-                this.costsmsi.setText("$" + formater.format(totalCosts));
-                break;
-        }
-
-    }
-
-    public void showEarnings(int studioInt, int totalEarnings) {
-        switch (studioInt) {
-            case 0:
-                this.earningsdell.setText("$" + formater.format(totalEarnings));
-                break;
-            case 1:
-                this.earningsmsi.setText("$" + formater.format(totalEarnings));
-                break;
-        }
-
-    }
-
-    public void showProfit(int studioInt, int totalProfit) {
-        switch (studioInt) {
-            case 0:
-                this.utilitydell.setText("$" + formater.format(totalProfit));
-                break;
-            case 1:
-                this.utilitymsi.setText("$" + formater.format(totalProfit));
-                break;
-        }
-    }
-
+    
+    
+    
+    
     // Getters and Setters
     public final Config getConfig() {
         return config;
@@ -1704,8 +1402,23 @@ public class MainUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private void utilitymsi_labelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_utilitymsi_labelActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code 
     }//GEN-LAST:event_utilitymsi_labelActionPerformed
 
     private void startSimulationActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_startSimulationActionPerformed

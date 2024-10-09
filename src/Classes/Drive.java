@@ -271,57 +271,6 @@ public class Drive {
         this.specs = specs;
     }
     
-    
-        /**
-     *  
-     * @deprecated @param typeInt
-     */
-    public void addElement(int typeInt) {
-        if (typeInt == 5) {
-            this.addChapter();
-        } else if (this.isNotFull(typeInt)) {
-            this.increaseChapterElement(typeInt);
-        }
-        this.getUserInterface().changeDriveElements(getcompanyInt(), typeInt, getcomponentElements());
-
-    }
-    /**
-     * @deprecated
-     */
-    private void addChapter() {
-        if (this.isTimeToPlotTwistChapter()) {
-            this.addPlotTwistChapter();
-        } else {
-            this.addStandardChapter();
-        }
-    }
-    
-      /**
-     * @deprecated
-     */
-    private void addStandardChapter() {
-        this.subtractcomponentElements(this.getSpecs().getstandardSpecs());
-        //this.standardComputersCounter++; // creo debo sumar desde worker
-        this.setnextGraphicsComputer(this.getnextGraphicsComputer() - 1);
-    }
-    
-    
-    /**
-     * @deprecated 
-     * @return 
-     */
-    public boolean canAssembleChapter() {
-        boolean isTimeToStandardAndEnoughElements = this.isTimeToStandardChapter() && this.canAssembleStandardChapter();
-        boolean isTimeToPlotTwistAndEnoughElements = this.isTimeToPlotTwistChapter() && this.canAssemblePlotTwistChapter();
-        return (isTimeToStandardAndEnoughElements || isTimeToPlotTwistAndEnoughElements);
-    }
-    
-    /**
-     * @deprecated 
-     * @param workerType 
-     */
-    private void increaseChapterElement(int workerType) {
-        this.getcomponentElements()[workerType]++;
-    }
+ 
 
 }

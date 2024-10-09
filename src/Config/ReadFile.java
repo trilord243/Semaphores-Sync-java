@@ -141,11 +141,11 @@ public class ReadFile {
         config.setDayDuration(Integer.parseInt(general[2]));
         config.setDeliveryDays(Integer.parseInt(general[4]));
 
-        // Nickelodeon config
+        // Dell config
         String[] dellParameter = configs[2].split("\n");
         setStudioConfig(dellParameter, config, 0);
 
-        // Cartoon Network config
+        // Msi config
         String[] msiParameter = configs[3].split("\n");
         setStudioConfig(msiParameter, config, 1);
 
