@@ -52,11 +52,12 @@ El programa permite configurar varios parámetros a través de un archivo de tex
 
 ## 👨‍💻 Autores
 
-[Nombres de los autores]
+- Felipe Escalona 👨🏻
+- Gabriel Mena 🧔🏻
 
 ## 📝 Notas adicionales
 
-Este proyecto fue desarrollado como parte del curso de Sistemas Operativos en [Nombre de la Universidad]. Utiliza conceptos de programación concurrente y simulación de procesos.
+Este proyecto fue desarrollado como parte del curso de Sistemas Operativos en la Universidad Metropolitana. Utiliza conceptos de programación concurrente y simulación de procesos.
 
 <div align="center">
   <img src="https://img.shields.io/badge/Hecho%20con-❤️-ff69b4" alt="Hecho con amor">
