@@ -10,6 +10,10 @@ import java.util.concurrent.Semaphore;
  *
  * @author Felipe
  */
+
+/**
+ * Representa al Gerente de Proyecto en la simulación de la compañía de computadoras.
+ */
 public class ProjectManager extends Thread {
 
     private int company; // Dell = 0, MSI = 1
@@ -17,18 +21,25 @@ public class ProjectManager extends Thread {
     private int daysLeft;
     private float accumulatedSalary;
     private float accumulatedTime;
-    private int defaultDeliveryDays; // Delivery days from Config
-    private int dayDurationInMs; // Day Duration from Config
+    private int defaultDeliveryDays;
+    private int dayDurationInMs; 
     private MainUI userInterface;
-    private float sixteenHoursTimeLapse; // Variable for determining the 16-hour block of the day
-    private float eightHoursTimeLapse; // Variable for determining the 8-hour block of the dat
-    private float thirtyMinutesTimeLapse; // Variable for determining the 30-minute timelapse between idle and working
-    private boolean idle; // Determines if the Manager is working or watching anime
+    private float sixteenHoursTimeLapse; 
+    private float eightHoursTimeLapse; 
+    private float thirtyMinutesTimeLapse; 
+    private boolean idle; 
+    
+      /**
+     * Semáforo utilizado para controlar el acceso concurrente a recursos compartidos.
+     */
     private Semaphore mutex;
     private Accountant accountant;
     private int discountedSalary;
     private int totalIncomeChart;
+  /**
+     * Constructor que inicializa el Gerente de Proyecto con sus parámetros.
 
+     */
     public ProjectManager(int company, int salaryPerHour, int defaultDeliveryDays,
             int dayDurationInMs, MainUI userInterface, Semaphore mutex, Accountant accountant) {
         this.salaryPerHour = salaryPerHour;
@@ -59,13 +70,13 @@ public class ProjectManager extends Thread {
                     setDaysLeft(getDaysLeft() - 1);
                 }
 
-                // NOTE - While the day is in the first 16-hour block
+                 // Simula las primeras 16 horas del día
                 while (getAccumulatedTime() < getSixteenHoursTimeLapse()) {
                     switchBetweenIdleAndWorking();
                 }
                 setIdle(false);
 
-                // NOTE - When the day is in the last 8-hour block
+                // Simula las últimas 8 horas del día
                 switchToChangingDaysLeft();
 
             } catch (InterruptedException e) {
@@ -73,11 +84,18 @@ public class ProjectManager extends Thread {
             }
         }
     }
-
+  /**
+     * Reinicia el contador de días restantes para la entrega.
+     */
     public void resetDaysLeft() {
         setDaysLeft(getDefaultDeliveryDays());
     }
-
+    
+    
+    /**
+     * Simula el cambio de días y actualiza los costos y ganancias.
+     * Utiliza el semáforo para proteger las operaciones críticas.
+     */
     public void switchToChangingDaysLeft() throws InterruptedException {
         String changingDaysLeftStatus = "Changing days";
 
@@ -88,6 +106,7 @@ public class ProjectManager extends Thread {
         sleep((long) getEightHoursTimeLapse());
 
         if (getDaysLeft() >= 0) {
+              // Sección crítica protegida por el semáforo
             getMutex().acquire();
 
             getAccountant().updateProjectManagerCosts(getSalaryPerHour() * 24);
@@ -107,7 +126,10 @@ public class ProjectManager extends Thread {
 
         }
     }
-
+    
+      /**
+     * Alterna entre estados de trabajo y ocio (ver anime).
+     */
     public void switchBetweenIdleAndWorking() throws InterruptedException {
 
         String workingStatus = "Checking project advances";
@@ -116,6 +138,10 @@ public class ProjectManager extends Thread {
         updateStatusAndAccumulatedTime(workingStatus, watchingAnimeStatus);
 
     }
+    
+      /**
+     * Actualiza el estado del gerente y el tiempo acumulado.
+     */
 
     public void updateStatusAndAccumulatedTime(String workingStatus, String watchingAnimeStatus)
             throws InterruptedException {
@@ -128,6 +154,11 @@ public class ProjectManager extends Thread {
         setIdle(!isIdle());
         sleep((long) getThirtyMinutesTimeLapse());
     }
+    
+    
+     /**
+     * Actualiza el salario acumulado del gerente.
+     */
 
     public void getPaid() {
         setAccumulatedSalary(getAccumulatedSalary() + (getSalaryPerHour() * 24));

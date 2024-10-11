@@ -6,6 +6,11 @@ import UserInterface.MainUI;
  *
  * @author Felipe
  */
+
+
+/**
+ * Representa el almacén de componentes y gestiona el ensamblaje de computadoras.
+ */
 public class Drive {
 
     private int companyInt;
@@ -16,6 +21,11 @@ public class Drive {
     private int nextGraphicsComputer;
     private MainUI userInterface;
     private ComputerSpecs specs;
+    
+    
+       /**
+     * Constructor que inicializa el almacén con capacidades máximas para cada componente.
+     */
 
     public Drive(int companyInt, int maxScripts, int maxScenarios, int maxAnimations, int maxVoices,
             int maxPlotTwists, ComputerSpecs specs, MainUI userInterface) {
@@ -35,22 +45,21 @@ public class Drive {
 
 
 
-    /**
-     * This is the actual addElement function.
-     *
-     * @param typeInt
-     * @param elementQuantity
+ /**
+     * Añade una cantidad de un tipo específico de componente al almacén.
      */
-    public void addElement(int typeInt, int elementQuantity) {
+   public void addElement(int typeInt, int elementQuantity) {
         if (this.isNotFull(typeInt)) {
-            this.increaseChapterElement(typeInt, elementQuantity);
+            
+            this.addComponentQuantity(typeInt, elementQuantity);
         }
         this.getUserInterface().changeDriveElements(getcompanyInt(), typeInt, getcomponentElements());
-
     }
 
     
-
+ /**
+     * Incrementa el contador de computadoras por tipo (estándar o con gráficos).
+     */
     public void addChapterByType(int chapterType) {
         switch (chapterType) {
             case 0:
@@ -60,7 +69,7 @@ public class Drive {
                 break;
             case 1:
                 this.setgraphicsComputersCounter(this.getgraphicsComputersCounter() + 1);
-                this.resetnextGraphicsComputer();
+                this.resetHighPerformanceComputerCounter();
                 this.getUserInterface().changeChapterQuantity(this.getcompanyInt(), 1, this.getgraphicsComputersCounter());
                 break;
             default:
@@ -68,18 +77,20 @@ public class Drive {
         }
         
     }
-
-    private boolean isTimeToPlotTwistChapter() {
-        return this.getnextGraphicsComputer() == 0;
-    }
+    /**
+     * Verifica si es momento de ensamblar una computadora con gráficos avanzados.
+     */
+private boolean isTimeToAssembleHighPerformanceComputer() {
+    return this.getnextGraphicsComputer() == 0;
+}
 
   
 
-    private void addPlotTwistChapter() {
-        this.subtractcomponentElements(this.getSpecs().gethighPerformanceSpecs());
-        //this.graphicsComputersCounter++; // creo debo sumar desde worker
-        this.resetnextGraphicsComputer();
-    }
+private void assembleHighPerformanceComputer() {
+    this.subtractcomponentElements(this.getSpecs().gethighPerformanceSpecs());
+    //this.graphicsComputersCounter++; // creo debo sumar desde worker
+    this.resetHighPerformanceComputerCounter();
+}
 
     private void subtractcomponentElements(int[] specificChapterSpecs) {
         for (int i = 0; i < getcomponentElements().length; i++) {
@@ -104,65 +115,69 @@ public class Drive {
 
     }
 
-    private void resetnextGraphicsComputer() {
-        this.setnextGraphicsComputer(this.getSpecs().getpolicyForHighPerformance());
-    }
+  private void resetHighPerformanceComputerCounter() {
+    this.setnextGraphicsComputer(this.getSpecs().getpolicyForHighPerformance());
+}
 
-    private boolean isTimeToStandardChapter() {
-        return !this.isTimeToPlotTwistChapter();
-    }
+   private boolean isTimeToAssembleStandardComputer() {
+    return !this.isTimeToAssembleHighPerformanceComputer();
+}
 
-    public boolean canAssembleStandardChapter() {
-        return this.getSpecs().checkStandardSpecs(getcomponentElements());
-    }
+  public boolean hasComponentsForStandardComputer() {
+    return this.getSpecs().checkStandardSpecs(getcomponentElements());
+}
 
-    public boolean canAssemblePlotTwistChapter() {
-        return this.getSpecs().checkStandardSpecs(getcomponentElements());
-    }
+ public boolean hasComponentsForHighPerformanceComputer() {
+    return this.getSpecs().checkStandardSpecs(getcomponentElements());
+}
 
 
-    public int decideWhichChapterToAssemble() {
-        int chapterType = -1;
-        if (this.canAssembleStandardAndEnoughElements()) {
-            chapterType = 0;
-        } else if (this.canAssemblePlotTwistAndEnoughElements()) {
-            chapterType = 1;
-        }
-        return chapterType;
-    }
 
-    public boolean canAssembleStandardAndEnoughElements() {
-        return this.isTimeToStandardChapter() && this.canAssembleStandardChapter();
+    public int determineComputerTypeToAssemble() {
+    int computerType = -1;
+    if (this.canAssembleStandardComputerWithSufficientComponents()) {
+        computerType = 0;
+    } else if (this.canAssembleHighPerformanceComputerWithSufficientComponents()) {
+        computerType = 1;
     }
+    return computerType;}
 
-    public boolean canAssemblePlotTwistAndEnoughElements() {
-        return this.isTimeToPlotTwistChapter() && this.canAssemblePlotTwistChapter();
-    }
 
-    private int getAmountByWorkerTypeIndex(int index) {
-        return this.getcomponentElements()[index];
-    }
+  public boolean canAssembleStandardComputerWithSufficientComponents() {
+    return this.isTimeToAssembleStandardComputer() && this.hasComponentsForStandardComputer();
+}
+
+  public boolean canAssembleHighPerformanceComputerWithSufficientComponents() {
+    return this.isTimeToAssembleHighPerformanceComputer() && this.hasComponentsForHighPerformanceComputer();
+}
+   private int getMaxComponentCapacity(int componentIndex) {
+    return this.getMaxComponentElements()[componentIndex];
+}
+
 
     private int getMaxByWorkerTypeIndex(int index) {
         return this.getMaxComponentElements()[index];
     }
 
     private boolean isNotFull(int index) {
-        return this.getAmountByWorkerTypeIndex(index) < this.getMaxByWorkerTypeIndex(index);
+        // Corregimos esta línea para que tenga sentido
+        return this.getCurrentComponentQuantity(index) < this.getMaxComponentCapacity(index);
     }
 
+    private int getCurrentComponentQuantity(int componentIndex) {
+        return this.getcomponentElements()[componentIndex];
+    }
     
 
-    private void increaseChapterElement(int workerType, int elementQuantity) {
-        int currentElementQuantity = this.getcomponentElements()[workerType];
-        int maxChapterElement = this.getMaxComponentElements()[workerType];
-        if ((currentElementQuantity + elementQuantity) > maxChapterElement) {
-            this.getcomponentElements()[workerType] = maxChapterElement;
-        } else {
-            this.getcomponentElements()[workerType] += elementQuantity;
-
-        }
+   private void addComponentQuantity(int componentType, int quantityToAdd) {
+    int currentQuantity = this.getcomponentElements()[componentType];
+    int maxCapacity = this.getMaxComponentElements()[componentType];
+    if ((currentQuantity + quantityToAdd) > maxCapacity) {
+        this.getcomponentElements()[componentType] = maxCapacity;
+    } else {
+        this.getcomponentElements()[componentType] += quantityToAdd;
     }
+}
 
     //Getters and Setters
     /**

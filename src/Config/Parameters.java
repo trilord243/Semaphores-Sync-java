@@ -6,6 +6,12 @@ import Classes.ComputerSpecs;
  *
  * @author Felipe
  */
+
+
+
+/**
+ * Clase que maneja los parámetros para diferentes tipos de trabajadores en la simulación de la compañía de computadoras.
+ */
 public class Parameters {
 
     private WorkerParams motherboardParams;
@@ -16,8 +22,12 @@ public class Parameters {
     private WorkerParams assemblersParams;
     private ComputerSpecs computerSpecs;
 
-    // Constructor with parameters
+
+    /**
+     * Constructor por defecto que inicializa todos los parámetros de trabajadores con valores predeterminados.
+     */
     public Parameters() {
+         // Inicialización con valores por defecto
         this.motherboardParams = new WorkerParams(1, 0, "", 0);
         this.cpuParams = new WorkerParams(1, 0, "", 0);
         this.ramParams = new WorkerParams(1, 0, "", 0);
@@ -26,7 +36,9 @@ public class Parameters {
         this.assemblersParams = new WorkerParams(1, 0, "", 0);
     }
 
-    // Constructor with parameters
+      /**
+     * Constructor que permite inicializar todos los parámetros de trabajadores y especificaciones de computadoras.
+     */
     public Parameters(WorkerParams screenwriters, WorkerParams scenarioDesigners, WorkerParams animators,
             WorkerParams voiceActors, WorkerParams plotTwistWriters,
             WorkerParams assemblers, ComputerSpecs specs) {
@@ -38,6 +50,12 @@ public class Parameters {
         this.assemblersParams = assemblers;
         this.computerSpecs = specs;
     }
+    
+    
+       /**
+     * Obtiene los parámetros del trabajador según su tipo.
+
+     */
 
     public WorkerParams getWorkerParamsByType(int workerType) {
         return switch (workerType) {
@@ -57,7 +75,13 @@ public class Parameters {
                 null;
         };
     }
-
+    
+    
+  /**
+     * Método alternativo para obtener los parámetros del trabajador según su tipo.
+     * @param workerType El tipo de trabajador (0-5).
+     * @return Los parámetros del trabajador correspondiente o parámetros no asignados si el tipo no es válido.
+     */
     public WorkerParams getParamsByWorkerType(int workerType) {
         switch (workerType) {
 
@@ -91,6 +115,12 @@ public class Parameters {
             }
         }
     }
+    
+       /**
+     * Establece la cantidad de trabajadores para un tipo específico.
+     * @param workerType El tipo de trabajador (0-5).
+     * @param newQuantity La nueva cantidad de trabajadores.
+     */
 
     public void setParamsQuantityByWorkerType(int workerType, int newQuantity) {
         switch (workerType) {

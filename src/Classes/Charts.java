@@ -21,6 +21,11 @@ import java.awt.Color;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.plot.PlotOrientation;
 
+
+/**
+ * Clase que maneja la creación y actualización de gráficos para comparar el rendimiento de Dell y MSI.
+ */
+
 public class Charts {
 
     private Config config;
@@ -32,22 +37,19 @@ public class Charts {
     private ComputerCompany msi;
 
     /**
-     * Constructor
-     *
-     * @param dell
-     * @param msi
+     * Constructor que inicializa el gráfico con datos de Dell y MSI.
      */
     public Charts(ComputerCompany dell, ComputerCompany msi, Config config) {
         this.dell = dell;
         this.msi = msi;
-
+         // Inicializa las series de datos para Dell y MSI
         seriesDell = new XYSeries("DELL");
         seriesMSI = new XYSeries("MSI");
         dataset = new XYSeriesCollection();
 
         dataset.addSeries(seriesDell);
         dataset.addSeries(seriesMSI);
-
+        // Crea el gráfico de líneas
         lineChart = ChartFactory.createXYLineChart(
                 "Time vs Profit",
                 "Time",
@@ -62,7 +64,7 @@ public class Charts {
     }
 
     /**
-     * Method to customize chart appearance
+     * Personaliza la apariencia del gráfico.
      */
     public void customizeChartUI(Color color) {
         XYPlot plot = getLineChart().getXYPlot();
@@ -71,7 +73,11 @@ public class Charts {
         renderer.setSeriesPaint(0, color);
         plot.setRenderer(renderer);
     }
-
+    
+    
+    /**
+     * Actualiza los datos del gráfico con los beneficios actuales de Dell y MSI.
+     */
     public void updateChartData() {
         int dellProfit = getdell().getAccountant().getTotalProfitChart();
         int msiProfit = getmsi().getAccountant().getTotalProfitChart();
@@ -81,10 +87,16 @@ public class Charts {
         getseriesDell().addOrUpdate(newTimestamp, dellProfit);
         getseriesMSI().addOrUpdate(newTimestamp, msiProfit);
     }
+    
+        /**
+     * Obtiene el panel del gráfico para mostrarlo en la interfaz.
+     */
 
     public ChartPanel getChartPanel() {
         return new ChartPanel(lineChart);
     }
+    
+    //Getters and setters
 
     public ComputerCompany getdell() {
         return dell;

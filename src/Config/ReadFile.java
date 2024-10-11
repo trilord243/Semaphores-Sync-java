@@ -12,13 +12,16 @@ import javax.swing.JOptionPane;
  *
  * @author Felipe
  */
+
+
+/**
+ * Clase que maneja la lectura y escritura de la configuración del proyecto desde/hacia un archivo de texto.
+ */
 public class ReadFile {
 
     /**
-     * Overwrite the text file inside the project
-     *
-     * @param txt (String containing the information of the read text file)
-     * read)
+     * Sobrescribe el archivo de texto de configuración con nueva información.
+     * @param txt String que contiene la nueva configuración.
      */
     public void printTxt(String txt) {
         try {
@@ -32,10 +35,9 @@ public class ReadFile {
         }
     }
 
-    /**
-     * Adds information to the project text file
-     *
-     * @param txt
+       /**
+     * Añade información al final del archivo de configuración existente.
+     * @param txt String que contiene la información adicional.
      */
     public void appendTxt(String txt) {
         try {
@@ -49,10 +51,9 @@ public class ReadFile {
         }
     }
 
-    /**
-     * Reads a text file line by line and converts it to a string
-     *
-     * @return String containing the information of the text file
+   /**
+     * Lee el archivo de configuración y lo convierte en un string.
+     * @return String que contiene toda la información del archivo de configuración.
      */
     public String readTxt() {
         String line;
@@ -88,7 +89,15 @@ public class ReadFile {
         }
         return null;
     }
-
+    
+    
+    
+ /**
+     * Configura los parámetros específicos de una compañía (Dell o MSI) basándose en la información leída del archivo.
+     * @param companyParameter Array de strings con los parámetros de la compañía.
+     * @param config Objeto Config donde se almacenarán los parámetros.
+     * @param studio Entero que indica qué compañía se está configurando (0 para Dell, 1 para MSI).
+     */
     public void setStudioConfig(String[] companyParameter, Config config, int studio) {
     String[] workerTypeStrings = {"Motherboard Producer", "CPU Producer", "RAM Memory Producer", "Power Supply Producer",
         "GPU Producer", "Assembling producer"};
@@ -130,22 +139,26 @@ public class ReadFile {
         }
     }
 }
-
+ /**
+     * Lee la configuración del archivo y la aplica al objeto Config.
+     * @param txt String que contiene toda la información de configuración.
+     * @param config Objeto Config donde se aplicará la configuración leída.
+     */
 
     public void readConfig(String txt, Config config) {
 
         String[] configs = txt.split("~");
         String[] general = configs[1].split("\n");
 
-        // General config
+         // Configuración general
         config.setDayDuration(Integer.parseInt(general[2]));
         config.setDeliveryDays(Integer.parseInt(general[4]));
 
-        // Dell config
+          // Configuración de Dell
         String[] dellParameter = configs[2].split("\n");
         setStudioConfig(dellParameter, config, 0);
 
-        // Msi config
+       // Configuración de MSI
         String[] msiParameter = configs[3].split("\n");
         setStudioConfig(msiParameter, config, 1);
 

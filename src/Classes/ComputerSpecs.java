@@ -8,6 +8,11 @@ package Classes;
  *
  * @author Felipe
  */
+
+
+/**
+ * Representa las especificaciones de las computadoras en la simulación.
+ */
 public class ComputerSpecs {
 
     private int[] highPerformanceSpecs;
@@ -16,6 +21,11 @@ public class ComputerSpecs {
     private int standardPrice;
     private int policyForHighPerformance;
 
+    
+    
+        /**
+     * Constructor que inicializa todas las especificaciones.
+     */
     public ComputerSpecs(int[] highPerformanceSpecs, int highPerformancePrice, int[] standardSpecs,
             int standardPrice, int policyForHighPerformance) {
         this.highPerformanceSpecs = highPerformanceSpecs;
@@ -24,11 +34,18 @@ public class ComputerSpecs {
         this.standardPrice = standardPrice;
         this.policyForHighPerformance = policyForHighPerformance;
     }
-
+    
+      /**
+     * Constructor que inicializa las especificaciones basadas en el tipo de estudio.
+     */
     public ComputerSpecs(int studioInt) {
         this.setSpecs(studioInt);
     }
 
+    
+     /**
+     * Verifica si los elementos disponibles cumplen con las especificaciones requeridas.
+     */
     private boolean checkSpecs(int[] chapterElements, int[] chapterSpecs) {
         boolean flag = true;
 
@@ -37,15 +54,28 @@ public class ComputerSpecs {
         }
         return flag;
     }
-
+    
+    
+    
+     /**
+     * Verifica si se cumplen las especificaciones para una computadora estándar.
+     */
     public boolean checkStandardSpecs(int[] chapterElements) {
         return this.checkSpecs(chapterElements, this.getstandardSpecs());
     }
+    
+    /**
+     * Verifica si se cumplen las especificaciones para una computadora de alto rendimiento.
+     */
 
     public boolean checkHighPerformanceSpecs(int[] chapterElements) {
         return this.checkSpecs(chapterElements, this.gethighPerformanceSpecs());
     }
 
+    
+       /**
+     * Establece las especificaciones basadas en el tipo de estudio (Dell o MSI).
+     */
     private void setSpecs(int studioInt) {
         boolean isDell = (studioInt == 0);
 

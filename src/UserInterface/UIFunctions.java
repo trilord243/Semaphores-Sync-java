@@ -11,8 +11,17 @@ import javax.swing.JTextPane;
  *
  * @author Felipe
  */
-public class UIFunctions {
 
+
+/**
+ * Clase que maneja funciones relacionadas con la interfaz de usuario y la configuración de la simulación.
+ */
+public class UIFunctions {
+/**
+     * Reduce la cantidad de trabajadores de un tipo específico en una compañía.
+     * @param company La compañía de computadoras.
+     * @param workerType El tipo de trabajador a reducir.
+     */
     public void reduceWorkersByType(ComputerCompany company, int workerType) {
         if (company.getCompanyParams().getParamsByWorkerType(workerType).getQuantity() > 1) {
             company.changeWorkerType(workerType, -1);
@@ -20,7 +29,11 @@ public class UIFunctions {
             JOptionPane.showMessageDialog(null, "You have reached minimum capacity for " + company.getCompanyParams().getParamsByWorkerType(workerType).getcomponentName() + "s");
         }
     }
-
+  /**
+     * Aumenta la cantidad de trabajadores de un tipo específico en una compañía.
+     * @param company La compañía de computadoras.
+     * @param workerType El tipo de trabajador a aumentar.
+     */
     public void increaseWorkersByType(ComputerCompany company, int workerType) {
         if (!company.isFull()) {
             company.changeWorkerType(-1, workerType);
@@ -28,7 +41,11 @@ public class UIFunctions {
             JOptionPane.showMessageDialog(null, "You have reached maximum capacity");
         }
     }
-
+ /**
+     * Configura los ajustes iniciales en la interfaz de usuario.
+     * @param config La configuración general.
+     * @param ... Varios JSpinner y JTextPane para diferentes elementos de la UI.
+     */
     public void setInitialSettings(Config config, JSpinner motherBoardDell, JSpinner cpuDell,
             JSpinner rammDell, JSpinner powerSupplyDell, JSpinner gpuDell, JSpinner assemblersDell,
             JSpinner motherBoardMsi, JSpinner cpuMsi, JSpinner ramMsi, JSpinner poweSupplyMsi,
@@ -42,7 +59,10 @@ public class UIFunctions {
                 gpuMsi, assemblerMsi);
         setInputValues(dayDurationInput, deliveryDaysInput, config);
     }
-
+    /**
+     * Carga la configuración desde un archivo.
+     * @param config El objeto de configuración a actualizar.
+     */
     public void loadFile(Config config) {
         try {
             ReadFile fileToRead = new ReadFile();
@@ -56,10 +76,12 @@ public class UIFunctions {
         }
     }
 
-    /**
-     * Generates the portion of config String for each company that will be
-     * printed before in the text file
-     *
+     /**
+     * Genera una cadena de configuración para una compañía.
+     * @param companyName Nombre de la compañía.
+     * @param configString Cadena de configuración actual.
+     * @param ... Cantidades de diferentes tipos de trabajadores.
+     * @return La cadena de configuración actualizada.
      */
   public String generateConfigString(String companyName, String configString, int motherboardProducers, int cpuProducers,
         int ramProducers, int powerSupplyProducers, int gpuProducers, int assemblers) {
@@ -69,13 +91,23 @@ public class UIFunctions {
 
     return configString;
 }
-
+  /**
+     * Configura los valores de entrada en la interfaz de usuario.
+     * @param dayDurationInput Campo de texto para la duración del día.
+     * @param deliveryDaysInput Campo de texto para los días de entrega.
+     * @param config Configuración actual.
+     */
     public void setInputValues(JTextPane dayDurationInput, JTextPane deliveryDaysInput, Config config) {
         dayDurationInput.setText(Integer.toString(config.getDayDuration() / 1000));
         deliveryDaysInput.setText(Integer.toString(config.getDeliveryDays()));
 
     }
-
+  /**
+     * Configura los valores de los spinners en la interfaz de usuario.
+     * @param company Identificador de la compañía (0 para Dell, 1 para MSI).
+     * @param config Configuración actual.
+     * @param ... Varios JSpinner para diferentes tipos de trabajadores.
+     */
     public void setSpinnersValues(int company, Config config, JSpinner motherBoard, JSpinner cpu,
             JSpinner ram, JSpinner powerSupply, JSpinner gpu, JSpinner assemblers) {
 
@@ -101,7 +133,7 @@ public class UIFunctions {
 
             default -> {
             }
-//hpña
+
         }
 
     }

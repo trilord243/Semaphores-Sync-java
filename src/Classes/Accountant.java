@@ -10,6 +10,11 @@ import UserInterface.MainUI;
  *
  * @author Felipe
  */
+
+
+/**
+ * Clase que maneja la contabilidad de una compañía de computadoras.
+ */
 public class Accountant {
 
     private int companyInt;
@@ -53,6 +58,11 @@ public class Accountant {
         this.totalIncome = totalIncome;
         this.totalProfit = totalProfit;
     }
+    
+    
+        /**
+     * Constructor que inicializa todos los costos e ingresos a cero.
+     */
 
     public Accountant(int companyInt, MainUI userInterface) {
         this.companyInt = companyInt;
@@ -73,7 +83,13 @@ public class Accountant {
         this.totalIncomeChart = 0;
         this.userInterface = userInterface;
     }
+    
+    
 
+    
+      /**
+     * Actualiza los costos .
+     */
     public void updatemotherboardCosts(int cost) {
         this.setmotherboardCosts(this.getmotherboardCosts() + cost);
     }
@@ -109,6 +125,11 @@ public class Accountant {
     public void updategraphicsComputerIncome(int income) {
         this.setgraphicsComputerIncome(this.getgraphicsComputerIncome() + income);
     }
+    
+    
+        /**
+     * Actualiza los costos de los trabajadores basado en su tipo.
+     */
 
     public void updateWorkerCosts(int typeInt, int cost) {
         switch (typeInt) {
@@ -153,12 +174,19 @@ public class Accountant {
         return this.getTotalOperationalCosts();
 
     }
+     /**
+     * Calcula y actualiza los ingresos totales.
+     */
 
     public void calculateTotalIncome() {
         this.setTotalIncome(
                 this.getstandardComputerIncome()
                 + this.getgraphicsComputerIncome());
     }
+    
+        /**
+     * Calcula y actualiza el beneficio total para el gráfico.
+     */
 
     public void calculateTotalProfit() {
         this.setTotalProfit(
@@ -171,6 +199,12 @@ public class Accountant {
                 this.getTotalIncomeChart()
                 - this.getTotalOperationalCosts());
     }
+    
+    
+    
+      /**
+     * Muestra los costos en la interfaz de usuario.
+     */
 
     public void showCostsInUI(int totalCosts) {
         this.getUserInterface().showCosts(companyInt, totalCosts);
@@ -183,6 +217,10 @@ public class Accountant {
     public void showProfitInUI() {
 
     }
+    
+    
+    // Getters and setters
+    
 
     /**
      * @return the companyInt

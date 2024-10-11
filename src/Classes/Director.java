@@ -16,6 +16,15 @@ import java.util.concurrent.Semaphore;
  *
  * @author Felipe
  */
+
+
+
+
+
+
+/**
+ * Representa al Director en la simulación de la compañía de computadoras.
+ */
 public class Director extends Thread {
 
     private int companyInt;
@@ -33,9 +42,20 @@ public class Director extends Thread {
     private float thirtyFiveMinutesTimeLapse;
     private float oneHourTimeLapse;
     private float oneMinuteTimeLapse;
+    
+     /**
+     * Semáforo utilizado para controlar el acceso concurrente a recursos compartidos.
+     * Este semáforo se utiliza principalmente para sincronizar las operaciones
+     * del Director con otros hilos, como el ProjectManager y los Workers.
+     */
     private Semaphore mutex;
     private Accountant accountant;
-
+    
+    
+    
+       /**
+     * Constructor que inicializa el Director con sus parámetros.
+     */
     public Director(int companyInt, int salaryPerHour, MainUI userInterface, ProjectManager manager, Drive drive,
             int dayDurationInMs, Semaphore mutex, Accountant accountant) {
         this.companyInt = companyInt;
@@ -55,29 +75,37 @@ public class Director extends Thread {
         this.mutex = mutex;
         this.accountant = accountant;
     }
+    
+    
+    
+    
+    
 
     @Override
     public void run() {
-        while (true) {
+        while (true) {// El director trabaja continuamente
             try {
 
                 if (getManager().getDaysLeft() <= 0) {
-                    // TODO - Code when the manager has to sell chapters
-                    sleep(getDayDurationInMs());
-
+                     // Cuando se acaba el plazo de entrega
+                    sleep(getDayDurationInMs());  // Simula el paso de un día
+                    
+                    
+                    
+                    // Calcula los ingresos de las computadoras estándar y de alto rendimiento
                     int standardChaptersIncome = getDrive().getstandardComputersCounter()
                             * getDrive().getSpecs().getstandardPrice();
 
                     int plotTwistChaptersIncome = getDrive().getgraphicsComputersCounter()
                             * getDrive().getSpecs().gethighPerformancePrice();
 
-                    // Semaphore
-                    getMutex().acquire();
+                    // Sección crítica: actualiza contadores y reinicia días
+                    getMutex().acquire(); // Adquiere el semáforo para exclusión mutua
                     getDrive().setgraphicsComputersCounter(0);
                     getDrive().setstandardComputersCounter(0);
                     getManager().resetDaysLeft();
-                    getMutex().release();
-
+                    getMutex().release();  // Libera el semáforo
+                    // Actualiza ingresos y muestra resultados en la UI
                     getAccountant().setTotalIncome(plotTwistChaptersIncome + standardChaptersIncome);
                     getUserInterface().showEarnings(getcompanyInt(), getAccountant().getTotalIncome());
 
@@ -88,19 +116,21 @@ public class Director extends Thread {
                     getUserInterface().showProfit(getcompanyInt(), getAccountant().getTotalProfit());
 
                 } else {
+                    // Rutina diaria normal del director
                     Random random = new Random();
 
-                    // Random hour to make the manager status checking
-                    int randomHour = random.nextInt(24);
-                    // Number of hours passed throughout a day
+                    
+                    int randomHour = random.nextInt(24); // Hora aleatoria para revisar al gerente
+                   
                     int hoursPassed = 0;
                     String workingStatus = "Working";
 
-                    getAccountant().updateDirectorCosts(getSalaryPerHour() * 24);
+                    getAccountant().updateDirectorCosts(getSalaryPerHour() * 24); // Actualiza costos del director
+
 
                     setTrapped(false);
                     setAccumulatedTime(0);
-
+                     // Actualiza ingresos para el gráfico si hay computadoras producidas
                     if (getDrive().getstandardComputersCounter() != 0) {
                         int standardChaptersIncomeChart = getDrive().getstandardComputersCounter()
                                 * getDrive().getSpecs().getstandardPrice();
@@ -110,15 +140,15 @@ public class Director extends Thread {
                         getManager().setTotalIncomeChart(plotTwistChaptersIncomeChart + standardChaptersIncomeChart);
                     }
 
-                    // Loop that executes each hour of a day
+                   // Simula el paso de 24 horas
                     while (hoursPassed < 24) {
                         hoursPassed++;
-                        // Conditional for when the hour of the day matches with the random hour to
-                        // begin the manager status checking
+                        // En la hora aleatoria, revisa el estado del gerente
                         if (hoursPassed == randomHour) {
                             float accumulatedTimeForWatchingInterval = 0;
                             checkManagerStatus(accumulatedTimeForWatchingInterval);
                         } else {
+                            // En las otras horas, simplemente simula el paso del tiempo
                             setAccumulatedTime(getAccumulatedTime() + getOneHourTimeLapse());
                             sleep((long) getOneHourTimeLapse());
                         }
@@ -132,45 +162,43 @@ public class Director extends Thread {
 
     }
 
-    /**
-     * Checks the status of the manager, if he's watching anime puts him a fault
-     *
-     * @param accumulatedTimeForWatchingInterval - Time that has passed since
-     * entered in the 35-minute watching manager interval
-     * @throws InterruptedException
+     /**
+     * Verifica el estado del gerente durante un intervalo de tiempo.
+     * Este método no usa directamente el semáforo, pero interactúa con el ProjectManager
+     * que sí lo utiliza para sincronizar su estado.
      */
     public void checkManagerStatus(float accumulatedTimeForWatchingInterval) throws InterruptedException {
 
-        // Loop that executes if the Manager hasn't been trapped or when the Time passed
-        // since the beginning of the interval is less than 35 minutes
+
         while (isTrapped() == false
                 && (accumulatedTimeForWatchingInterval < (getThirtyFiveMinutesTimeLapse()))) {
             String directorWatchingStatus = "Watching Manager";
             getUserInterface().changeDirectorStatusText(getcompanyInt(),
                     directorWatchingStatus);
 
-            // Conditional for when the Manager is watching anime
+        
             if (getManager().isIdle()) {
                 addManagerFault();
                 updateManagerFaultsUI();
             }
 
-            // Sums one minute to the Time passed since the beginning of the interval
-            // because it checks the Manager every minute in the interval
+
             accumulatedTimeForWatchingInterval += getOneMinuteTimeLapse();
             setAccumulatedTime(getAccumulatedTime() + getOneMinuteTimeLapse());
             sleep((long) getOneMinuteTimeLapse());
         }
 
-        // 25 minutes left of the hour after the 35-minute checking interval
+
         float twentyFiveMinutesTimeLapse = getOneHourTimeLapse() - getThirtyFiveMinutesTimeLapse();
         sleep((long) twentyFiveMinutesTimeLapse);
         setAccumulatedTime(getAccumulatedTime()
                 + twentyFiveMinutesTimeLapse);
     }
+    
 
-    /**
-     * Adds a fault to the manager and sums to the Discounted Salary
+  /**
+     * Añade una falta al gerente y actualiza el salario descontado.
+     * Este método modifica el estado del ProjectManager, que está protegido por el semáforo.
      */
     public void addManagerFault() {
         setManagerFaultsQty(getManagerFaultsQty() + 1);
@@ -179,6 +207,10 @@ public class Director extends Thread {
         setTrapped(true);
     }
 
+    
+        /**
+     * Actualiza la interfaz de usuario con la información de faltas del gerente.
+     */
     public void updateManagerFaultsUI() {
         getUserInterface().changeManagerFaultsQtyText(getcompanyInt(),
                 Integer.toString(getManagerFaultsQty()));
@@ -186,6 +218,10 @@ public class Director extends Thread {
         getUserInterface().changeManagerDiscountedText(getcompanyInt(),
                 "$" + Integer.toString(getDiscountedSalary()));
     }
+    
+       /**
+     * Actualiza el salario acumulado del Director.
+     */
 
     public void getPaid() {
         setAccumulatedSalary(getAccumulatedSalary() + (getSalaryPerHour() * 24));

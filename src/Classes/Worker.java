@@ -80,7 +80,7 @@ public class Worker extends Thread {
                 getMutex().acquire();
                 this.accountant.updateWorkerCosts(componentType, this.getAccumulatedSalary());
                 this.setAccumulatedSalary(0);
-                typeOfChapterToAssemble = getDrive().decideWhichChapterToAssemble();
+                typeOfChapterToAssemble = getDrive().determineComputerTypeToAssemble();
                 if (typeOfChapterToAssemble != -1) {
                     getDrive().subtractcomponentElements(typeOfChapterToAssemble);
                     this.setassemblyTypeOnGoing(typeOfChapterToAssemble);
