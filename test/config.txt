@@ -6,9 +6,9 @@ deliveryDays
 
 DELL
 motherboardProducers
-5
+1
 cpuProducers
-5
+1
 ramProducers
 1
 powerSupplyProducers
@@ -16,13 +16,13 @@ powerSupplyProducers
 gpuProducers
 1
 assemblers
-5
+1
 
 MSI
 motherboardProducers
-3
+1
 cpuProducers
-3
+1
 ramProducers
 1
 powerSupplyProducers
@@ -30,4 +30,4 @@ powerSupplyProducers
 gpuProducers
 1
 assemblers
-3
+1
